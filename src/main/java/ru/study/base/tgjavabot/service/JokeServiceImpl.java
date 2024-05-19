@@ -10,7 +10,6 @@ import ru.study.base.tgjavabot.repository.JokeRepository;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
@@ -30,18 +29,17 @@ public class JokeServiceImpl implements JokeService {
                 () -> new ResourceNotFoundException(String.format("Joke not found by id = %s", id))
         );
         jokeFromDB.setTitle(jokeDto.getTitle());
-        jokeFromDB.setText(jokeFromDB.getText());
+        jokeFromDB.setText(jokeDto.getText());
         jokeFromDB.setChangedData(LocalDateTime.now());
         return jokeRepository.save(jokeFromDB);
     }
 
     @Override
-    public boolean delete(Long id) {
+    public void delete(Long id) {
         Joke jokeFromDB = jokeRepository.findById(id).orElseThrow(
                 () -> new ResourceNotFoundException(String.format("Joke not found by id = %s", id))
         );
         jokeRepository.deleteById(id);
-        return true;
     }
 
     @Override
