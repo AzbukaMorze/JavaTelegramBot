@@ -10,5 +10,6 @@ public interface JokeService {
     Joke update(Long id, JokeDto jokeDto);
     void delete(Long id);
     List<Joke> getAll();
-    Joke getById(Long id);
+    Joke getById(Long id, Long userId);  // Обновлено
+    List<Joke> getTopJokes(int limit); // Новый метод
 }

@@ -87,7 +87,7 @@ public class TelegramBotService {
                     deleteJoke(chatId, messageText);
                     break;
                 case WAITING_FOR_JOKE_ID:
-                    getJokeById(chatId, messageText);
+                    getJokeById(chatId, messageText); // Обновлено
                     break;
                 default:
                     handleCommand(update);
@@ -164,7 +164,7 @@ public class TelegramBotService {
     private void handleUpdateId(long chatId, String jokeIdText) {
         try {
             Long jokeId = Long.parseLong(jokeIdText);
-            Joke joke = jokeService.getById(jokeId);
+            Joke joke = jokeService.getById(jokeId, chatId);
             jokeDrafts.put(chatId, new JokeDto(joke.getTitle(), joke.getText()));
             jokeUpdateIds.put(chatId, jokeId);
             sendMessage(chatId, "Enter the new joke title (current title: \"" + joke.getTitle() + "\"):");
@@ -208,7 +208,7 @@ public class TelegramBotService {
     private void getJokeById(long chatId, String jokeIdText) {
         try {
             Long jokeId = Long.parseLong(jokeIdText);
-            Joke joke = jokeService.getById(jokeId);
+            Joke joke = jokeService.getById(jokeId, chatId); // Передаем chatId как userId
             sendMessage(chatId, "Here's your joke:\n\n" + joke.getTitle() + "\n" + joke.getText());
             chatStates.put(chatId, BotState.IDLE);
         } catch (NumberFormatException e) {
