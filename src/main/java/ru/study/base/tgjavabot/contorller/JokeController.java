@@ -2,6 +2,7 @@ package ru.study.base.tgjavabot.contorller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -26,8 +27,8 @@ public class JokeController {
     }
 
     @GetMapping
-    ResponseEntity<List<Joke>> getJokes() {
-        return ResponseEntity.ok(jokeService.getAll());
+    ResponseEntity<Page<Joke>> getJokes(@RequestParam int page) {
+        return ResponseEntity.ok(jokeService.getAll(page, true));
     }
 
     @GetMapping("/{id}")
@@ -38,6 +39,11 @@ public class JokeController {
     @GetMapping("/top")
     ResponseEntity<List<Joke>> getTopJokes(@RequestParam(defaultValue = "5") int limit) {
         return ResponseEntity.ok(jokeService.getTopJokes(limit));
+    }
+
+    @GetMapping("/random")
+    ResponseEntity<Joke> getRandomJoke() {
+        return ResponseEntity.ok(jokeService.getRandomJoke());
     }
 
     @PutMapping("/{id}")

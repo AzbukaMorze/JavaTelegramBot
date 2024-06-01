@@ -16,7 +16,8 @@ import java.time.LocalDateTime;
 public class JokeHistory {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(generator = "history_id_seq", strategy = GenerationType.SEQUENCE)
+    @SequenceGenerator(name = "history_id_seq", sequenceName = "history_id_seq", initialValue = 1, allocationSize = 1)
     private Long id;
 
     @ManyToOne

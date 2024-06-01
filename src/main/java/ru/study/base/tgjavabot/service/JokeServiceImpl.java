@@ -1,6 +1,9 @@
 package ru.study.base.tgjavabot.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import ru.study.base.tgjavabot.dto.JokeDto;
 import ru.study.base.tgjavabot.exception.ResourceNotFoundException;
@@ -47,7 +50,13 @@ public class JokeServiceImpl implements JokeService {
     }
 
     @Override
-    public List<Joke> getAll() {
+    public Page<Joke> getAll(int page, boolean sortByDate) {
+        int size = 3;
+        return jokeRepository.findAll(PageRequest.of(page, size, Sort.by("changedData")));
+    }
+
+    @Override
+    public List<Joke> getAll4Bot() {
         return jokeRepository.findAll();
     }
 
@@ -77,5 +86,10 @@ public class JokeServiceImpl implements JokeService {
                         () -> new ResourceNotFoundException("Joke not found by id = " + result[0])
                 ))
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public Joke getRandomJoke(){
+        return jokeRepository.getRandomJoke();
     }
 }
