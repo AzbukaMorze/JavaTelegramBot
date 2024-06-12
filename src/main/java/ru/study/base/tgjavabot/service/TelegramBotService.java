@@ -5,7 +5,9 @@ import com.pengrad.telegrambot.UpdatesListener;
 import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.model.request.ParseMode;
 import com.pengrad.telegrambot.request.SendMessage;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import ru.study.base.tgjavabot.dto.JokeDto;
 import ru.study.base.tgjavabot.exception.ResourceNotFoundException;
@@ -15,6 +17,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@Slf4j
 @Service
 public class TelegramBotService {
 
@@ -122,6 +125,12 @@ public class TelegramBotService {
                 case "/listjokes":
                     listJokes(chatId);
                     break;
+                case "/topjokes":
+                    handleTopJokes(chatId, update);
+                    break;
+                case "/randomjoke":
+                    handleRandomJoke(chatId, update);
+                    break;
                 default:
                     handleUnknownCommand(update);
                     break;
@@ -136,7 +145,9 @@ public class TelegramBotService {
                 "/getjoke - Get a joke by ID\n" +
                 "/updatejoke - Update an existing joke\n" +
                 "/deletejoke - Delete a joke\n" +
-                "/listjokes - List all jokes";
+                "/listjokes - List all jokes\n" +
+                "/topjokes - Get top jokes\n" +
+                "/randomjoke - Get a random joke";
 
         sendMessage(update.message().chat().id(), commandsList);
     }
@@ -164,7 +175,7 @@ public class TelegramBotService {
     private void handleUpdateId(long chatId, String jokeIdText) {
         try {
             Long jokeId = Long.parseLong(jokeIdText);
-            Joke joke = jokeService.getById(jokeId);
+            Joke joke = jokeService.getById(jokeId, chatId);
             jokeDrafts.put(chatId, new JokeDto(joke.getTitle(), joke.getText()));
             jokeUpdateIds.put(chatId, jokeId);
             sendMessage(chatId, "Enter the new joke title (current title: \"" + joke.getTitle() + "\"):");
@@ -208,7 +219,7 @@ public class TelegramBotService {
     private void getJokeById(long chatId, String jokeIdText) {
         try {
             Long jokeId = Long.parseLong(jokeIdText);
-            Joke joke = jokeService.getById(jokeId);
+            Joke joke = jokeService.getById(jokeId, chatId);
             sendMessage(chatId, "Here's your joke:\n\n" + joke.getTitle() + "\n" + joke.getText());
             chatStates.put(chatId, BotState.IDLE);
         } catch (NumberFormatException e) {
@@ -219,7 +230,7 @@ public class TelegramBotService {
     }
 
     private void listJokes(long chatId) {
-        List<Joke> jokes = jokeService.getAll();
+        List<Joke> jokes = jokeService.getAll4Bot();
         if (jokes.isEmpty()) {
             sendMessage(chatId, "No jokes found.");
         } else {
@@ -230,6 +241,30 @@ public class TelegramBotService {
                         .append("Text: ").append(joke.getText()).append("\n\n");
             }
             sendMessage(chatId, jokesList.toString());
+        }
+    }
+
+    private void handleTopJokes(long chatId, Update update) {
+        List<Joke> topJokes = jokeService.getTopJokes(5); // Получаем топ 5 шуток
+        if (topJokes.isEmpty()) {
+            sendMessage(chatId, "No top jokes found.");
+        } else {
+            StringBuilder topJokesList = new StringBuilder("Top jokes:\n\n");
+            for (Joke joke : topJokes) {
+                topJokesList.append("ID: ").append(joke.getId()).append("\n")
+                        .append("Title: ").append(joke.getTitle()).append("\n")
+                        .append("Text: ").append(joke.getText()).append("\n\n");
+            }
+            sendMessage(chatId, topJokesList.toString());
+        }
+    }
+
+    private void handleRandomJoke(long chatId, Update update) {
+        Joke randomJoke = jokeService.getRandomJoke();
+        if (randomJoke == null) {
+            sendMessage(chatId, "No random joke found.");
+        } else {
+            sendMessage(chatId, "Here's a random joke:\n\n" + randomJoke.getTitle() + "\n" + randomJoke.getText());
         }
     }
 }

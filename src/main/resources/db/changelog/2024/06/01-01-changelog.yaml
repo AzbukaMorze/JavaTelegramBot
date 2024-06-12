@@ -1,0 +1,88 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1717245215889-1
+      author: Main (generated)
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createSequence:
+            incrementBy: 1
+            sequenceName: history_id_seq
+            startValue: 1
+  - changeSet:
+      id: 1717245215889-2
+      author: Main (generated)
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createSequence:
+            incrementBy: 1
+            sequenceName: joke_id_seq
+            startValue: 1
+  - changeSet:
+      id: 1717245215889-3
+      author: Main (generated)
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_joke_history
+                  name: id
+                  type: BIGINT
+              - column:
+                  constraints:
+                    nullable: false
+                  name: joke_id
+                  type: BIGINT
+              - column:
+                  constraints:
+                    nullable: false
+                  name: user_id
+                  type: BIGINT
+              - column:
+                  constraints:
+                    nullable: false
+                  name: call_time
+                  type: DATETIME
+            tableName: joke_history
+  - changeSet:
+      id: 1717245215889-4
+      author: Main (generated)
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_jokes
+                  name: id
+                  type: BIGINT
+              - column:
+                  name: title
+                  type: VARCHAR(255)
+              - column:
+                  name: text
+                  type: VARCHAR(255)
+              - column:
+                  name: created_date
+                  type: DATETIME
+              - column:
+                  name: changed_date
+                  type: DATETIME
+            tableName: jokes
+  - changeSet:
+      id: 1717245215889-5
+      author: Main (generated)
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: joke_id
+            baseTableName: joke_history
+            constraintName: FK_JOKE_HISTORY_ON_JOKE
+            referencedColumnNames: id
+            referencedTableName: jokes
+
