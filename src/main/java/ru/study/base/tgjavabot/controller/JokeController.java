@@ -1,5 +1,6 @@
-package ru.study.base.tgjavabot.contorller;
+package ru.study.base.tgjavabot.controller;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -17,6 +18,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/jokes")
 @RequiredArgsConstructor
+@Transactional
 public class JokeController {
 
     private final JokeService jokeService;
