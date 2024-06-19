@@ -1,5 +1,6 @@
-package ru.study.base.tgjavabot.contorller;
+package ru.study.base.tgjavabot.controller;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -8,6 +9,7 @@ import ru.study.base.tgjavabot.service.UserService;
 @RequiredArgsConstructor
 @RequestMapping("/manage")
 @RestController
+@Transactional
 public class RolesManageController {
 
     private final UserService userService;
