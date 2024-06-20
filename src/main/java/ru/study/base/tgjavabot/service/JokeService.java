@@ -12,8 +12,8 @@ public interface JokeService {
     void delete(Long id);
     Page<Joke> getAll(int page, boolean sortByDate);
     List<Joke> getAll4Bot();
-    Joke getById(Long id, Long userId);  // Обновлено
-    List<Joke> getTopJokes(int limit); // Новый метод
+    Joke getById(Long id, Long userId);
+    List<Joke> getTopJokes(int limit);
     Joke getRandomJoke();
 }
 

@@ -2,8 +2,7 @@ package ru.study.base.tgjavabot.model;
 
 import jakarta.persistence.*;
 import lombok.*;
-
-import java.time.LocalDateTime;
+import java.util.Date;
 
 @Getter
 @Setter
@@ -28,5 +27,5 @@ public class JokeHistory {
     private Long userId;
 
     @Column(name = "call_time", nullable = false)
-    private LocalDateTime callTime = LocalDateTime.now();
+    private Date callTime;
 }

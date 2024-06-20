@@ -12,6 +12,8 @@ import ru.study.base.tgjavabot.model.Joke;
 import ru.study.base.tgjavabot.model.JokeHistory;
 import ru.study.base.tgjavabot.repository.JokeHistoryRepository;
 import ru.study.base.tgjavabot.repository.JokeRepository;
+import ru.study.base.tgjavabot.utils.CurrentTimeService;
+import ru.study.base.tgjavabot.utils.CurrentTimeServiceImpl;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -24,6 +26,7 @@ public class JokeServiceImpl implements JokeService {
     private final JokeRepository jokeRepository;
     private final JokeMapper jokeMapper;
     private final JokeHistoryRepository jokeHistoryRepository;
+    private final CurrentTimeService currentTimeService;
 
     @Override
     public Joke save(JokeDto jokeDto) {
@@ -37,7 +40,7 @@ public class JokeServiceImpl implements JokeService {
         );
         jokeFromDB.setTitle(jokeDto.getTitle());
         jokeFromDB.setText(jokeDto.getText());
-        jokeFromDB.setChangedData(LocalDateTime.now());
+        jokeFromDB.setChangedData(currentTimeService.getCurrentTime());
         return jokeRepository.save(jokeFromDB);
     }
 
@@ -73,7 +76,7 @@ public class JokeServiceImpl implements JokeService {
         JokeHistory jokeHistory = JokeHistory.builder()
                 .joke(joke)
                 .userId(userId)
-                .callTime(LocalDateTime.now())
+                .callTime(currentTimeService.getCurrentTime())
                 .build();
         jokeHistoryRepository.save(jokeHistory);
     }
