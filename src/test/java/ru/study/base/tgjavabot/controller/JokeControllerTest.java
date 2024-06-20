@@ -41,4 +41,35 @@ class JokeControllerTest {
         verify(jokeService, times(1)).getAll(page, true);
     }
 
+    @Test
+    void createJoke() {
+    }
+
+    @Test
+    void getJokes() {
+    }
+
+    @Test
+    void getJokeById() {
+    }
+
+    @Test
+    void getTopJokes() {
+    }
+
+    @Test
+    void getRandomJoke() {
+    }
+
+    @Test
+    void updateJoke() {
+    }
+
+    @Test
+    void deleteJoke() {
+    }
+
+    @Test
+    void resourceNotFoundException() {
+    }
 }

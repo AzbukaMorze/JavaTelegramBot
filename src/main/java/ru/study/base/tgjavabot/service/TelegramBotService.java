@@ -245,7 +245,7 @@ public class TelegramBotService {
     }
 
     private void handleTopJokes(long chatId, Update update) {
-        List<Joke> topJokes = jokeService.getTopJokes(5); // Получаем топ 5 шуток
+        List<Joke> topJokes = jokeService.getTopJokes(5);
         if (topJokes.isEmpty()) {
             sendMessage(chatId, "No top jokes found.");
         } else {

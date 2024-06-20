@@ -2,7 +2,7 @@ package ru.study.base.tgjavabot.model;
 
 import jakarta.persistence.*;
 import lombok.*;
-import java.time.LocalDateTime;
+import java.util.Date;
 
 @Getter
 @Setter
@@ -12,6 +12,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Entity(name = "jokes")
 @Table(name = "jokes")
+@EqualsAndHashCode
 public class Joke {
 
     @Id
@@ -27,9 +28,9 @@ public class Joke {
     private String text;
 
     @Column(name = "created_date")
-    private LocalDateTime createdData = LocalDateTime.now();;
+    private Date createdData;
 
     @Column(name = "changed_date")
-    private LocalDateTime changedData;
+    private Date changedData;
 
 }
